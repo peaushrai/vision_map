@@ -1,0 +1,58 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    screens: {
+      xs: "400px",
+      ms: "550px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      xxl: "1326px",
+      "2xl": "1536px",
+      "3xl": "3000px",
+    },
+    extend: {
+      fontFamily: {
+        inter: ["Inter"],
+        poppins: ["Poppins", "sans-serif"],
+      },
+      colors: {
+        "primary-black":"#192126",
+        "light-black":"#394047",
+        "primary-green":"#a1e510",
+        "light-green":"#b3e743",
+        "primary-blue": "#0176D3",
+        "dim-gray": "#F2F2F2",
+        "light-blue": "#F2F8FD",
+        "mid-black": "#181818",
+        "primary-white": "#FFFFFF",
+        "dark-white": "#616C87",
+        danger: "#FE2129",
+        "dim-light-gray": "#E9E9E9",
+        "light-gray": "#E7E7E7",
+        "mid-gray": "#F8F8F8",
+        "primary-orange": "#FE724C",
+        "light-orange": "#FC916A",
+        "primary-gray": "#8C8A9D",
+        "dark-black": "#323643",
+        "blue-gray": "#FBFBFB",
+        "mid-light-gray": "#D4D4D8",
+        "pale-white": "#000000",
+        "light-danger": "#F03D3D",
+        "gray-secondary": "#E4E4E7",
+        "green-secondary": "#37C760",
+        "shiny-black": "#202020",
+        "dark-green": "#269345",
+      },
+      backgroundImage: {
+        "svg-background": "url('./src/assets/illustration/FoodBg.svg')",
+      },
+      boxShadow: {
+        custom: "15px 15px 30px 0px rgba(131, 131, 131, 0.25)",
+      },
+    },
+  },
+  plugins: [],
+};
