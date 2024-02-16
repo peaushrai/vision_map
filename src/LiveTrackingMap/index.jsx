@@ -65,30 +65,75 @@ const Routing = ({ from, to }) => {
     };
   }, [map, from, to]);
 
+  // useEffect(() => {
+  //   // Clean up any existing animation interval
+  //   clearInterval(animationIntervalRef.current);
+
+  //   // Start animation
+  //   animationIntervalRef.current = setInterval(() => {
+  //     if (animationIndexRef.current < routeCoordinates.length - 1) {
+  //       const startPoint = routeCoordinates[animationIndexRef.current];
+  //       const endPoint = routeCoordinates[animationIndexRef.current + 1];
+  //       const distance = startPoint.distanceTo(endPoint);
+  //       const duration = distance * 10; // Adjust speed as needed
+  //       movingMarkerRef.current.setLatLng(endPoint);
+  //       animationIndexRef.current += 1;
+  //     } else {
+  //       // End of animation
+  //       clearInterval(animationIntervalRef.current);
+  //     }
+  //   }, 120); // Update marker position every 1 second
+
+  //   return () => {
+  //     // Clean up animation interval on component unmount
+  //     clearInterval(animationIntervalRef.current);
+  //   };
+  // }, [routeCoordinates]);
+
+  
   useEffect(() => {
-    // Clean up any existing animation interval
     clearInterval(animationIntervalRef.current);
 
-    // Start animation
-    animationIntervalRef.current = setInterval(() => {
-      if (animationIndexRef.current < routeCoordinates.length - 1) {
-        const startPoint = routeCoordinates[animationIndexRef.current];
-        const endPoint = routeCoordinates[animationIndexRef.current + 1];
-        const distance = startPoint.distanceTo(endPoint);
-        const duration = distance * 10; // Adjust speed as needed
-        movingMarkerRef.current.setLatLng(endPoint);
-        animationIndexRef.current += 1;
-      } else {
-        // End of animation
-        clearInterval(animationIntervalRef.current);
-      }
-    }, 120); // Update marker position every 1 second
+    const moveMarkerSmoothly = () => {
+        if (animationIndexRef.current < routeCoordinates.length - 1) {
+            const startPoint = routeCoordinates[animationIndexRef.current];
+            const endPoint = routeCoordinates[animationIndexRef.current + 1];
+
+            // Adjust the number of steps based on the distance, aiming for ultra-smooth and slower animation
+            const distance = startPoint.distanceTo(endPoint);
+            const steps = distance / 1; // Increase steps for slower animation, adjust based on distance
+
+            // Calculate the step size for latitude and longitude
+            const latStep = (endPoint.lat - startPoint.lat) / steps;
+            const lngStep = (endPoint.lng - startPoint.lng) / steps;
+
+            let stepCount = 0;
+
+            // Adjust the interval duration for slower animation
+            const stepInterval = setInterval(() => {
+                if (stepCount < steps) {
+                    movingMarkerRef.current.setLatLng([
+                        movingMarkerRef.current.getLatLng().lat + latStep,
+                        movingMarkerRef.current.getLatLng().lng + lngStep,
+                    ]);
+                    stepCount++;
+                } else {
+                    clearInterval(stepInterval);
+                    animationIndexRef.current += 1;
+                    if (animationIndexRef.current < routeCoordinates.length - 1) {
+                        moveMarkerSmoothly(); // Move to the next segment smoothly
+                    }
+                }
+            }, 30); // Increase interval duration for slower movement
+        }
+    };
+
+    moveMarkerSmoothly();
 
     return () => {
-      // Clean up animation interval on component unmount
-      clearInterval(animationIntervalRef.current);
+        clearInterval(animationIntervalRef.current);
     };
-  }, [routeCoordinates]);
+}, [routeCoordinates]);
 
   return null;
 };
